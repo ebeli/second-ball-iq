@@ -202,12 +202,16 @@ update in place.
 ```powershell
 az login
 ./infra/deploy.ps1 -Location swedencentral     # with the MATCHLENS_* variables set, from the repo root
+./infra/deploy.ps1 -Offline                     # no model settings: runs on the offline templates, no model costs
+./infra/deploy.ps1 -Offline -ResourceGroup my-existing-group   # into a resource group you already have
 ```
 
 The deployed app is public, and every live match spends Foundry tokens (roughly 0.25 USD per full match with
 gpt-5.4-mini). The model budget and the operator key above bound what visitors can spend; also set a budget with
 alerts on the subscription, and delete the resource group
-(`az group delete -n rg-matchlens`) after judging.
+(`az group delete -n rg-second-ball-iq`) after judging. If you deployed into a group that holds other resources
+(`-ResourceGroup`), delete only the app: `az containerapp delete -n second-ball-iq -g <group>`, then the
+`second-ball-iq-env` environment and the `secondballiq…` registry.
 
 ## Container
 

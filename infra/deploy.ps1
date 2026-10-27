@@ -1,6 +1,6 @@
 <#
 .SYNOPSIS
-  Deploys MatchLens to Azure Container Apps: builds the image in Azure Container Registry (no local Docker needed)
+  Deploys Second Ball IQ to Azure Container Apps: builds the image in Azure Container Registry (no local Docker needed)
   and runs it as one always-on container with the Foundry settings as environment variables.
 
 .EXAMPLE
@@ -15,9 +15,9 @@
   ./infra/deploy.ps1 -Offline
 #>
 param(
-    [string]$ResourceGroup = "rg-matchlens",
+    [string]$ResourceGroup = "rg-second-ball-iq",
     [string]$Location = "swedencentral",
-    [string]$Name = "matchlens",
+    [string]$Name = "second-ball-iq",
     [string]$ChatDeployment = $env:MATCHLENS_CHAT_DEPLOYMENT,
     # Deploy without any model settings: the app runs on its offline templates (no keys, no model costs).
     [switch]$Offline
@@ -34,7 +34,12 @@ if (-not $Offline) {
 if (-not (Test-Path "Dockerfile")) { throw "Run this from the repo root." }
 
 Write-Host "Preparing the Azure CLI..."
-az extension add --name containerapp --upgrade --only-show-errors | Out-Null
+# The Container Apps commands are a CLI extension. Updating it can fail behind a company proxy; an installed
+# version is good enough, so only stop when it is missing altogether.
+az extension add --name containerapp --upgrade --only-show-errors 2>$null | Out-Null
+if (-not (az extension show --name containerapp --query version -o tsv 2>$null)) {
+    throw "The Azure CLI 'containerapp' extension could not be installed (pip failed). Try: az upgrade; then az extension add --name containerapp. Behind a company proxy, run it from another network or see docs/server.md."
+}
 az provider register --namespace Microsoft.App --wait | Out-Null
 az provider register --namespace Microsoft.OperationalInsights --wait | Out-Null
 az provider register --namespace Microsoft.ContainerRegistry --wait | Out-Null
@@ -43,7 +48,7 @@ az provider register --namespace Microsoft.ContainerRegistry --wait | Out-Null
 $subscription = az account show --query id -o tsv
 $registry = ($Name -replace '[^a-z0-9]', '') + $subscription.Substring(0, 8).ToLower() -replace '[^a-z0-9]', ''
 $tag = Get-Date -Format "yyyyMMdd-HHmmss"
-$image = "$registry.azurecr.io/matchlens:$tag"
+$image = "$registry.azurecr.io/$($Name):$tag"
 
 Write-Host "Resource group $ResourceGroup in $Location"
 az group create --name $ResourceGroup --location $Location --only-show-errors | Out-Null
@@ -55,7 +60,7 @@ if (-not (az acr show --name $registry --resource-group $ResourceGroup --query n
 }
 
 Write-Host "Building $image in Azure (takes a few minutes)..."
-az acr build --registry $registry --image "matchlens:$tag" . --only-show-errors
+az acr build --registry $registry --image "$($Name):$tag" . --only-show-errors
 if ($LASTEXITCODE -ne 0) { throw "The image build failed; see the log above." }
 
 $registryUser = az acr credential show --name $registry --query username -o tsv
@@ -94,7 +99,7 @@ if (-not (az containerapp show --name $Name --resource-group $ResourceGroup --qu
     Write-Host "Creating container app $Name"
     # At most one replica: the match, the editor queue and the SignalR connections live in memory.
     # Zero minimum replicas: the app sleeps when nobody uses it (no compute cost) and wakes in a few seconds.
-    # Run "az containerapp update -n matchlens -g rg-matchlens --min-replicas 1" before a live demo to keep it warm.
+    # Run "az containerapp update -n <Name> -g <ResourceGroup> --min-replicas 1" before a live demo to keep it warm.
     az containerapp create --name $Name --resource-group $ResourceGroup --environment $environment `
         --image $image --registry-server "$registry.azurecr.io" `
         --registry-username $registryUser --registry-password $registryPassword `
@@ -116,5 +121,5 @@ else {
 
 $fqdn = az containerapp show --name $Name --resource-group $ResourceGroup --query properties.configuration.ingress.fqdn -o tsv
 Write-Host ""
-Write-Host "MatchLens is live at https://$fqdn"
+Write-Host "Second Ball IQ is live at https://$fqdn   (judges: https://$fqdn/judge)"
 Write-Host "Health: https://$fqdn/api/health   MCP: https://$fqdn/mcp"
