@@ -1,0 +1,11 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <RootNamespace>MatchLens.Analytics</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\MatchLens.Contracts\MatchLens.Contracts.csproj" />
+  </ItemGroup>
+
+</Project>

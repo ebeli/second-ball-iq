@@ -1,0 +1,149 @@
+{
+  "schemaVersion": "1.0",
+  "matchId": "demo-match-1",
+  "scenarioId": "demo-match",
+  "seed": 1,
+  "homeGoals": 1,
+  "awayGoals": 1,
+  "expectations": [
+    {
+      "kind": "possessionIllusion",
+      "teamId": "team-har",
+      "fromSec": 1200,
+      "toSec": 2100,
+      "rule": "team has \u003E= 65% of completed passes in the window, \u003C= 1 shot and \u003C= 0.15 xG",
+      "verified": true,
+      "measured": {
+        "possessionShare": 0.684,
+        "shots": 0,
+        "xg": 0,
+        "finalThirdEntries": 7,
+        "completedPasses": 108
+      },
+      "evidenceEventIds": [
+        "evt-000275",
+        "evt-000278",
+        "evt-000375",
+        "evt-000392",
+        "evt-000425",
+        "evt-000456",
+        "evt-000461"
+      ]
+    },
+    {
+      "kind": "pressingShift",
+      "teamId": "team-nor",
+      "fromSec": 2760,
+      "toSec": 3480,
+      "rule": "team wins the ball in the opponent\u0027s defensive third \u003E= 5 times in the window, and at least twice as often as in the same-length window before it",
+      "verified": true,
+      "measured": {
+        "highRecoveries": 7,
+        "highRecoveriesBefore": 0,
+        "shotsAfterRecovery": 5
+      },
+      "evidenceEventIds": [
+        "evt-000687",
+        "evt-000702",
+        "evt-000712",
+        "evt-000718",
+        "evt-000725",
+        "evt-000786",
+        "evt-000851"
+      ]
+    },
+    {
+      "kind": "turnoverToChance",
+      "teamId": "team-nor",
+      "fromSec": 3660,
+      "toSec": 3720,
+      "rule": "a scripted high turnover by the team is followed by a shot within the window",
+      "verified": true,
+      "measured": {
+        "recoveryToShotSec": 4,
+        "goal": 1,
+        "xg": 0.159
+      },
+      "evidenceEventIds": [
+        "evt-000937",
+        "evt-000938",
+        "evt-000939",
+        "evt-000940",
+        "evt-000941",
+        "evt-000942"
+      ]
+    }
+  ],
+  "moments": [
+    {
+      "kind": "buildUpShot",
+      "teamId": "team-har",
+      "matchClockSec": 2495,
+      "eventIds": [
+        "evt-000605",
+        "evt-000606",
+        "evt-000607",
+        "evt-000608",
+        "evt-000609"
+      ]
+    },
+    {
+      "kind": "highTurnover",
+      "teamId": "team-nor",
+      "matchClockSec": 2834,
+      "eventIds": [
+        "evt-000686",
+        "evt-000687",
+        "evt-000688"
+      ]
+    },
+    {
+      "kind": "highTurnover",
+      "teamId": "team-nor",
+      "matchClockSec": 2991,
+      "eventIds": [
+        "evt-000724",
+        "evt-000725",
+        "evt-000726",
+        "evt-000727",
+        "evt-000728"
+      ]
+    },
+    {
+      "kind": "highTurnover",
+      "teamId": "team-nor",
+      "matchClockSec": 3135,
+      "eventIds": [
+        "evt-000785",
+        "evt-000786",
+        "evt-000787"
+      ]
+    },
+    {
+      "kind": "highTurnover",
+      "teamId": "team-nor",
+      "matchClockSec": 3380,
+      "eventIds": [
+        "evt-000850",
+        "evt-000851",
+        "evt-000852",
+        "evt-000853",
+        "evt-000854"
+      ]
+    },
+    {
+      "kind": "highTurnover",
+      "teamId": "team-nor",
+      "matchClockSec": 3677,
+      "eventIds": [
+        "evt-000937",
+        "evt-000938",
+        "evt-000939",
+        "evt-000940",
+        "evt-000941",
+        "evt-000942"
+      ]
+    }
+  ],
+  "allVerified": true
+}

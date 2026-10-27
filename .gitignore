@@ -1,0 +1,20 @@
+bin/
+obj/
+.vs/
+.vscode/
+*.user
+spike-results/
+.env
+*.env.local
+node_modules/
+
+
+# Test runs: server logs and capture output
+logs/
+captures/
+
+# Private notes and local leftovers, not part of the public repository
+other-projects.docx
+*.zip
+out/
+*.tsbuildinfo

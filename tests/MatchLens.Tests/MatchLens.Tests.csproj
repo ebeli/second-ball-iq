@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <!-- Unit tests for the deterministic core: Match Forge, the analytics engine, the Validator, tactical tests and
+       fault drills. No model is called; Decision-1 is replaced by fakes. Run: dotnet test -->
+  <PropertyGroup>
+    <IsPackable>false</IsPackable>
+    <IsTestProject>true</IsTestProject>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.11.1" />
+    <PackageReference Include="xunit" Version="2.9.2" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="2.8.2" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\MatchLens.Contracts\MatchLens.Contracts.csproj" />
+    <ProjectReference Include="..\..\src\MatchLens.Analytics\MatchLens.Analytics.csproj" />
+    <ProjectReference Include="..\..\src\MatchLens.Decisions\MatchLens.Decisions.csproj" />
+    <ProjectReference Include="..\..\src\MatchLens.Forge\MatchLens.Forge.csproj" />
+    <ProjectReference Include="..\..\src\MatchLens.Agents\MatchLens.Agents.csproj" />
+  </ItemGroup>
+</Project>

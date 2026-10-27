@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <RootNamespace>MatchLens.Server</RootNamespace>
+    <!-- The web front end (web/) builds into wwwroot; see docs/server.md. -->
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\MatchLens.Forge\MatchLens.Forge.csproj" />
+    <ProjectReference Include="..\MatchLens.Agents\MatchLens.Agents.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- MCP C# SDK, Streamable HTTP transport. 2.0.0 was current on Oct 16, 2026. -->
+    <PackageReference Include="ModelContextProtocol.AspNetCore" Version="2.0.0" />
+  </ItemGroup>
+
+</Project>

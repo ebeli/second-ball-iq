@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <AssemblyName>forge</AssemblyName>
+    <RootNamespace>MatchLens.Forge.Cli</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\MatchLens.Forge\MatchLens.Forge.csproj" />
+    <ProjectReference Include="..\..\src\MatchLens.Analytics\MatchLens.Analytics.csproj" />
+  </ItemGroup>
+
+</Project>

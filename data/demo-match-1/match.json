@@ -1,0 +1,155 @@
+{
+  "schemaVersion": "1.0",
+  "matchId": "demo-match-1",
+  "scenarioId": "demo-match",
+  "seed": 1,
+  "competition": "MatchLens Synthetic League",
+  "home": {
+    "teamId": "team-har",
+    "name": "Harbor City",
+    "shortName": "HAR",
+    "primaryColor": "#1F4E8C",
+    "players": [
+      {
+        "playerId": "har-01",
+        "name": "Tomas Reyes",
+        "shirtNumber": 1,
+        "position": "goalkeeper"
+      },
+      {
+        "playerId": "har-02",
+        "name": "Eli Nakamura",
+        "shirtNumber": 2,
+        "position": "defender"
+      },
+      {
+        "playerId": "har-04",
+        "name": "Jonah Brandt",
+        "shirtNumber": 4,
+        "position": "defender"
+      },
+      {
+        "playerId": "har-05",
+        "name": "Sami Virtanen",
+        "shirtNumber": 5,
+        "position": "defender"
+      },
+      {
+        "playerId": "har-03",
+        "name": "Kofi Mensah",
+        "shirtNumber": 3,
+        "position": "defender"
+      },
+      {
+        "playerId": "har-06",
+        "name": "Mira Okafor",
+        "shirtNumber": 6,
+        "position": "midfielder"
+      },
+      {
+        "playerId": "har-08",
+        "name": "Lucas Ferreira",
+        "shirtNumber": 8,
+        "position": "midfielder"
+      },
+      {
+        "playerId": "har-10",
+        "name": "Aino Lehto",
+        "shirtNumber": 10,
+        "position": "midfielder"
+      },
+      {
+        "playerId": "har-07",
+        "name": "Dario Costa",
+        "shirtNumber": 7,
+        "position": "forward"
+      },
+      {
+        "playerId": "har-09",
+        "name": "Ravi Sharma",
+        "shirtNumber": 9,
+        "position": "forward"
+      },
+      {
+        "playerId": "har-11",
+        "name": "Noah Lindqvist",
+        "shirtNumber": 11,
+        "position": "forward"
+      }
+    ]
+  },
+  "away": {
+    "teamId": "team-nor",
+    "name": "Northvale",
+    "shortName": "NOR",
+    "primaryColor": "#2E7D4F",
+    "players": [
+      {
+        "playerId": "nor-01",
+        "name": "Ivo Petrov",
+        "shirtNumber": 1,
+        "position": "goalkeeper"
+      },
+      {
+        "playerId": "nor-02",
+        "name": "Leo Hartmann",
+        "shirtNumber": 2,
+        "position": "defender"
+      },
+      {
+        "playerId": "nor-05",
+        "name": "Mateo Silva",
+        "shirtNumber": 5,
+        "position": "defender"
+      },
+      {
+        "playerId": "nor-04",
+        "name": "Oskar Nieminen",
+        "shirtNumber": 4,
+        "position": "defender"
+      },
+      {
+        "playerId": "nor-03",
+        "name": "Yusuf Demir",
+        "shirtNumber": 3,
+        "position": "defender"
+      },
+      {
+        "playerId": "nor-08",
+        "name": "Felix Moreau",
+        "shirtNumber": 8,
+        "position": "midfielder"
+      },
+      {
+        "playerId": "nor-06",
+        "name": "Emma Kowalski",
+        "shirtNumber": 6,
+        "position": "midfielder"
+      },
+      {
+        "playerId": "nor-10",
+        "name": "Hugo Laine",
+        "shirtNumber": 10,
+        "position": "midfielder"
+      },
+      {
+        "playerId": "nor-07",
+        "name": "Ken Watanabe",
+        "shirtNumber": 7,
+        "position": "forward"
+      },
+      {
+        "playerId": "nor-09",
+        "name": "Arlo Quinn",
+        "shirtNumber": 9,
+        "position": "forward"
+      },
+      {
+        "playerId": "nor-11",
+        "name": "Vilja Korhonen",
+        "shirtNumber": 11,
+        "position": "forward"
+      }
+    ]
+  }
+}

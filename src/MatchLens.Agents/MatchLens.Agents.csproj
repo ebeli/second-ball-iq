@@ -1,0 +1,19 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <RootNamespace>MatchLens.Agents</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\MatchLens.Contracts\MatchLens.Contracts.csproj" />
+    <ProjectReference Include="..\MatchLens.Analytics\MatchLens.Analytics.csproj" />
+    <ProjectReference Include="..\MatchLens.Decisions\MatchLens.Decisions.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- Microsoft Agent Framework. Floating to the latest 1.x stable (1.25.0 on Oct 15, 2026); pin once it builds. -->
+    <PackageReference Include="Microsoft.Agents.AI.OpenAI" Version="1.*" />
+    <PackageReference Include="Microsoft.Agents.AI.Workflows" Version="1.*" />
+  </ItemGroup>
+
+</Project>

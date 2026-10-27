@@ -1,0 +1,25 @@
+name: ci
+   on:
+     push:
+     pull_request:
+   jobs:
+     build-and-test:
+       runs-on: ubuntu-latest
+       steps:
+         - uses: actions/checkout@v4
+         - uses: actions/setup-dotnet@v4
+           with:
+             dotnet-version: 8.0.x
+         - uses: actions/setup-node@v4
+           with:
+             node-version: 22
+         - name: Build .NET
+           run: dotnet build MatchLens.sln -c Release
+         - name: Unit tests (no models are called)
+           run: dotnet test tests/MatchLens.Tests/MatchLens.Tests.csproj -c Release --no-build
+         - name: Build web
+           working-directory: web
+           run: |
+             npm ci
+             npx tsc --noEmit -p .
+             npx vite build --outDir ../ci-wwwroot --emptyOutDir

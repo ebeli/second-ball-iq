@@ -1,0 +1,8 @@
+{
+  "name": "secondballiq-capture",
+  "private": true,
+  "type": "module",
+  "description": "Records a test run of Second Ball IQ: screenshots of the studio, the fan view and the overlay, plus the match state, into captures/.",
+  "scripts": { "capture": "node capture.mjs" },
+  "dependencies": { "playwright": "1.56.0" }
+}
