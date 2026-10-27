@@ -8,20 +8,29 @@
   az login
   ./infra/deploy.ps1 -Location swedencentral
   # Run it again after code changes: it rebuilds the image and updates the app in place.
+
+.EXAMPLE
+  # Offline demo: no Foundry keys needed, no model costs; moments are written by the fact-built templates.
+  az login
+  ./infra/deploy.ps1 -Offline
 #>
 param(
     [string]$ResourceGroup = "rg-matchlens",
     [string]$Location = "swedencentral",
     [string]$Name = "matchlens",
-    [string]$ChatDeployment = $env:MATCHLENS_CHAT_DEPLOYMENT
+    [string]$ChatDeployment = $env:MATCHLENS_CHAT_DEPLOYMENT,
+    # Deploy without any model settings: the app runs on its offline templates (no keys, no model costs).
+    [switch]$Offline
 )
 
 $ErrorActionPreference = "Stop"
 
-foreach ($v in "MATCHLENS_DECISION_ENDPOINT", "MATCHLENS_DECISION_KEY", "MATCHLENS_DECISION_DEPLOYMENT") {
-    if (-not [Environment]::GetEnvironmentVariable($v)) { throw "Set $v first (the same values as for local runs)." }
+if (-not $Offline) {
+    foreach ($v in "MATCHLENS_DECISION_ENDPOINT", "MATCHLENS_DECISION_KEY", "MATCHLENS_DECISION_DEPLOYMENT") {
+        if (-not [Environment]::GetEnvironmentVariable($v)) { throw "Set $v first (the same values as for local runs), or pass -Offline." }
+    }
+    if (-not $ChatDeployment) { throw "Set MATCHLENS_CHAT_DEPLOYMENT or pass -ChatDeployment, or pass -Offline." }
 }
-if (-not $ChatDeployment) { throw "Set MATCHLENS_CHAT_DEPLOYMENT or pass -ChatDeployment." }
 if (-not (Test-Path "Dockerfile")) { throw "Run this from the repo root." }
 
 Write-Host "Preparing the Azure CLI..."
@@ -58,12 +67,12 @@ if (-not (az containerapp env show --name $environment --resource-group $Resourc
     az containerapp env create --name $environment --resource-group $ResourceGroup --location $Location --only-show-errors | Out-Null
 }
 
-$envVars = @(
+[string[]]$envVars = if ($Offline) { @("MATCHLENS_MODE=offline") } else { @(
     "MATCHLENS_DECISION_ENDPOINT=$env:MATCHLENS_DECISION_ENDPOINT",
     "MATCHLENS_DECISION_KEY=secretref:decision-key",
     "MATCHLENS_DECISION_DEPLOYMENT=$env:MATCHLENS_DECISION_DEPLOYMENT",
     "MATCHLENS_CHAT_DEPLOYMENT=$ChatDeployment"
-)
+) }
 # Spending caps for a public site (see docs/server.md): any MATCHLENS_MAX_* or per-visitor limit set here is passed on;
 # unset, the server's defaults apply.
 foreach ($v in "MATCHLENS_MAX_CHAT_PER_HOUR", "MATCHLENS_MAX_CHAT_PER_DAY", "MATCHLENS_MAX_DECISION_PER_HOUR", "MATCHLENS_MAX_DECISION_PER_DAY",
@@ -72,11 +81,14 @@ foreach ($v in "MATCHLENS_MAX_CHAT_PER_HOUR", "MATCHLENS_MAX_CHAT_PER_DAY", "MAT
     if ($value) { $envVars += "$v=$value" }
 }
 # The operator key: with it set, only someone who opens the studio as /?key=... can start, stop or steer a match.
-$secrets = @("decision-key=$env:MATCHLENS_DECISION_KEY")
+[string[]]$secrets = if ($Offline) { @() } else { @("decision-key=$env:MATCHLENS_DECISION_KEY") }
 if ($env:MATCHLENS_ADMIN_KEY) {
     $secrets += "admin-key=$env:MATCHLENS_ADMIN_KEY"
     $envVars += "MATCHLENS_ADMIN_KEY=secretref:admin-key"
 }
+
+# The offline demo has no secrets; splatting an empty list passes nothing.
+[string[]]$secretArgs = if ($secrets.Count) { @("--secrets") + $secrets } else { @() }
 
 if (-not (az containerapp show --name $Name --resource-group $ResourceGroup --query name -o tsv 2>$null)) {
     Write-Host "Creating container app $Name"
@@ -87,14 +99,16 @@ if (-not (az containerapp show --name $Name --resource-group $ResourceGroup --qu
         --image $image --registry-server "$registry.azurecr.io" `
         --registry-username $registryUser --registry-password $registryPassword `
         --target-port 8080 --ingress external --min-replicas 0 --max-replicas 1 --cpu 0.5 --memory 1Gi `
-        --secrets @secrets `
+        @secretArgs `
         --env-vars @envVars --only-show-errors | Out-Null
     if ($LASTEXITCODE -ne 0) { throw "Creating the container app failed." }
 }
 else {
     Write-Host "Updating container app $Name"
-    az containerapp secret set --name $Name --resource-group $ResourceGroup `
-        --secrets @secrets --only-show-errors | Out-Null
+    if ($secrets.Count) {
+        az containerapp secret set --name $Name --resource-group $ResourceGroup `
+            --secrets @secrets --only-show-errors | Out-Null
+    }
     az containerapp update --name $Name --resource-group $ResourceGroup --image $image `
         --set-env-vars @envVars --only-show-errors | Out-Null
     if ($LASTEXITCODE -ne 0) { throw "Updating the container app failed." }
