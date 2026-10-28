@@ -92,12 +92,11 @@ consistency test, not proof on real video. One match at a time, state in memory.
 
 ## Testing instructions for judges
 
-- **Hosted:** open `<HOSTED URL>/judge`. It starts the demo match at 38′ at 8× (or joins it) and opens the fan view
-  in judge mode. The studio is at `<HOSTED URL>/`, the overlay at `<HOSTED URL>/overlay?mode=preview`.
-  The app may take up to a minute to wake from idle. The hosted site runs the live models within an hourly and
-  daily budget; if visitors have spent it, the studio badge says "Models paused" and moments come from the offline
-  templates until it renews (every number and check still works). Starting a new match from the studio needs an
-  operator key; judge mode does not.
+- **Hosted:** open https://second-ball-iq.icywave-0b7b6c59.swedencentral.azurecontainerapps.io/judge. It starts the demo match at 38′ at 8× (or joins it) and opens the fan view
+  in judge mode. The studio is at https://second-ball-iq.icywave-0b7b6c59.swedencentral.azurecontainerapps.io/, the overlay at https://second-ball-iq.icywave-0b7b6c59.swedencentral.azurecontainerapps.io/overlay?mode=preview.
+  The app may take a few seconds to wake from idle. The hosted demo runs on the offline templates to keep it free of
+  model costs (every number, check and test still works; the video shows the live models). Starting a new match from
+  the studio needs an operator key; judge mode does not.
 - **Locally:** .NET 8 SDK, then `dotnet run --project src/MatchLens.Server` and open `http://localhost:5080/judge`.
   Without model keys it runs offline on templates (every number and check still works; no model text). With keys,
   set `MATCHLENS_DECISION_ENDPOINT`, `MATCHLENS_DECISION_KEY`, `MATCHLENS_DECISION_DEPLOYMENT` and
@@ -106,9 +105,9 @@ consistency test, not proof on real video. One match at a time, state in memory.
 
 ## Links
 
-- Demo video (under two minutes): `<VIDEO URL>`
-- Code (public GitHub repository): `<REPO URL>`
-- Working project: `<HOSTED URL>/judge`
+- Demo video (under two minutes): https://youtu.be/nBRbEQaTKnc
+- Code (public GitHub repository): https://github.com/ebeli/second-ball-iq
+- Working project: https://second-ball-iq.icywave-0b7b6c59.swedencentral.azurecontainerapps.io/judge
 
 ## Categories
 
